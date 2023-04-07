@@ -2,6 +2,7 @@ package com.example.qrcodegenerator
 
 import android.content.Context
 import android.os.Bundle
+import android.os.Environment.getExternalStorageDirectory
 import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -12,6 +13,8 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import com.example.qrcodegenerator.ui.theme.QRcodeGeneratorTheme
+import io.github.g0dkar.qrcode.QRCode
+import java.io.FileOutputStream
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -56,7 +59,19 @@ fun generateQrCode(
     email: String,
     registerDate: String
 ) {
-    TODO("Not yet implemented")
+    val content = "{ " +
+            "\"name\":$name" +
+            "\"date\":$email" +
+            "\"email\":$registerDate" +
+            " }"
+    // By default, the writeImage() method outputs PNGs
+    //val qrCodeBitmap = QRCode(string).render().nativeImage() as Bitmap
+    val result = FileOutputStream(getExternalStorageDirectory().absolutePath +"example01.png").use {
+//        QRCode("https://github.com/g0dkar/qrcode-kotlin")
+        QRCode(content)
+            .render()
+            .writeImage(it)
+    }
 }
 
 @Preview(showBackground = true)
