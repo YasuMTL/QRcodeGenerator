@@ -9,6 +9,7 @@ import android.util.Log
 import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.Button
@@ -21,6 +22,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.core.content.FileProvider
 import com.example.qrcodegenerator.ui.theme.QRcodeGeneratorTheme
@@ -52,22 +54,25 @@ class MainActivity : ComponentActivity() {
 
     @Composable
     fun EditTexts(context: Context) {
-        var name by remember { mutableStateOf("Yamada Taro") }
+        var name by remember { mutableStateOf("日本語センター　図書太郎") }
         var email by remember { mutableStateOf("test@hotmail.com") }
         var registerDate by remember { mutableStateOf("2023-04-07") }
 
-        Column {
-            TextField(value = name, onValueChange = { name = it }, label = { Text(text = "Name") })
-            TextField(value = email, onValueChange = { email = it }, label = { Text(text = "Email") })
-            TextField(value = registerDate, onValueChange = { registerDate = it }, label = { Text(text = "RegisterDate") })
+        Column(
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally
+        ){
+            TextField(value = name, onValueChange = { name = it }, label = { Text(text = "氏名") })
+            TextField(value = email, onValueChange = { email = it }, label = { Text(text = "メールアドレス") })
+            TextField(value = registerDate, onValueChange = { registerDate = it }, label = { Text(text = "会員登録日") })
             Button(
                 onClick = {
-                    Toast.makeText(context, "QR Code is supposed to be generated :)", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(context, "QRコード発行中・・・", Toast.LENGTH_SHORT).show()
                     val qrCodeFile = generateQrCode(name, email, registerDate)
                     sendEmail(qrCodeFile, name, email)
                 }
             ) {
-                Text(text = "QR Code")
+                Text(text = "QRコード発行")
             }
         }
     }
